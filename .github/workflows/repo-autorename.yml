@@ -1,0 +1,59 @@
+name: Rename Repository and Update Redirect URL
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *"
+  workflow-dispatch:
+
+jobs:
+  update_redirect:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Get GitHub Username
+      - name: Get GitHub Username
+        id: get_username
+        run: |
+          USERNAME=$(curl -s -H "Authorization: token ${{ secrets.AUTORENAME_TOKEN }}" \
+          https://api.github.com/user | jq -r .login)
+          echo "USERNAME=$USERNAME" >> $GITHUB_ENV
+
+      # Step 2: Get Repository Name
+      - name: Get Repository Name
+        id: get_repo_name
+        run: |
+          REPO_NAME=$(curl -s -H "Authorization: token ${{ secrets.AUTORENAME_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }} | jq -r .name)
+          echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+
+      # Step 3: Compare and Rename Repository if Necessary
+      - name: Compare and Rename Repository if Necessary
+        if: env.REPO_NAME != env.USERNAME
+        run: |
+          curl -X PATCH -H "Authorization: token ${{ secrets.AUTORENAME_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{"name": "'"$USERNAME"'"}' \
+          https://api.github.com/repos/${{ github.repository }}
+
+      # Step 4: Update index.mkd redirect_url with username if needed
+      - name: Update Redirect URL in index.mkd
+        run: |
+          # Ensure we're in the correct directory where index.mkd is located
+          cd pages
+
+          # Replace the redirect URL with the GitHub username
+          if [[ -f "index.mkd" ]]; then
+            sed -i "s|https://github.com/[^ ]*|https://github.com/${{ env.USERNAME }}|g" index.mkd
+          fi
+
+      # Step 5: Commit and Push the Changes
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions@github.com"
+          git add pages/index.mkd
+          git commit -m "Update redirect URL to point to current GitHub username"
+          git push origin main
