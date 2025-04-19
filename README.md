@@ -1,4 +1,3 @@
-<p align="center">
-  <img src="https://github.com/images/mona-whisper.gif" alt="a title" width="128" height="128"><br>
-  <strong>I'm Rusina. Ready to solve your problems!</strong>
-</p>
+**I'm Luis Antonio.**  
+I focus on simple code that performs complex tasks.  
+No bloated tools, no unnecessary steps — just clean logic that works.
