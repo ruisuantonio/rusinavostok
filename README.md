@@ -2,4 +2,4 @@
 I focus on simple code that performs complex tasks.  
 No bloated tools, no unnecessary steps — just clean logic that works.
 
-[mail me](mailto:contact.ruisuantonio@proton.me) | [share my profile](https://ruisuantonio.github.io/shareprofile)
+[mail me](mailto:contact.ruisuantonio@proton.me) | [share my profile](https://ruisuantonio.github.io/share)
