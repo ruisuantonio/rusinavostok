@@ -26,6 +26,6 @@ Hi — if you’re not busy, I have a quick question about [topic]...
 
 Following this helps speed up responses and improves communication. Your email will be answered as quickly as possible!
 
-<div align="right">
-    [go back](../contact.md)
+<div style="text-align: right;">
+  <a href="../contact.md">go back</a>
 </div>
